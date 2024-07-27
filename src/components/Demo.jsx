@@ -82,7 +82,7 @@ const Demo = () => {
                     ))}
             </div>
 
-        </div>
+        </div   >
         {/* Display results */}
         <div className="my-10 max-w-full flex justify-center items-center">
             {isFetching ? (
