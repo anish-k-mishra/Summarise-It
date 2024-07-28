@@ -8,6 +8,7 @@ const Demo = () => {
         url: "",
         summary :""
     });
+    const [copied, setCopied] = useState('');
 
     const [allArticles, setAllArticles] = useState([]);
 
@@ -23,7 +24,7 @@ const Demo = () => {
 
     const handelSubmit = async(e) => {
         e.preventDefault();
-        const {data} = await getSummary({articleUrl: article.url});
+        const {data} = await getSummary({articleUrl: article.url});  
 
         if(data?.summary){
             const newArticle = {...article, summary: data.summary};
@@ -34,6 +35,12 @@ const Demo = () => {
             localStorage.setItem('articles', JSON.stringify(updatedAllArticles));
         }
 
+    }
+
+    const handleCopy = (copyUrl) => {
+        setCopied(copyUrl);
+        navigator.clipboard.writeText(copyUrl);
+        setTimeout(()=>setCopied(false), 3000);
     }
   return (
     <section className="mt-16 w-full max-w-xl ">
@@ -72,12 +79,12 @@ const Demo = () => {
                             onClick={()=>setArticle(item)}
                             className='link_card'
                         >
-                            <div className="copy_btn">
-                                <img src={copy} alt="copy" 
+                            <div className="copy_btn" onClick={()=>handleCopy(item.url)}>
+                                <img src={copied === item.url ? tick : copy} alt="copy_icon" 
                                     className="w-[40%] h-[40%] object-contain"
                                 />
                             </div>
-                            <p className="flex-1 font-satoshi text-blue-600 font-medium text-sm truncate">{item.url}</p>
+                            <p className="flex-1 font-satoshi text-blue-700 font-medium text-sm truncate">{item.url}</p>
                         </div>
                     ))}
             </div>
